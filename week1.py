@@ -10,7 +10,7 @@ import scipy.stats as scips
 def infocontent(p):
     return - log2(p)
 
-def entropy(p: np.array):
+def entropy1(p: np.array):
     if type(p) == list:
         p = np.array(p)
     if np.sum(p) != 1:
@@ -34,7 +34,7 @@ def calculateDatasetShannonEntropy(items):
  
     return entropy_value
 
-def jointentropy(p: np.array):
+def jointEntropy(p: np.array):
     print(type(p))
     print(p.shape[0])
     print(p.shape[1])
@@ -51,3 +51,30 @@ def jointentropy(p: np.array):
         H = np.sum(H)
 
     return  H
+
+def marginalP(p: np.array, dim: int):
+    if dim + 1 > p.ndim:
+        raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
+    return np.sum(p, axis=dim)
+
+marginalX = lambda  p : marginalP(p, 0)
+
+marginalY = lambda  p : marginalP(p, 1)
+
+def entropyXGivenY(p: np.array):
+    # 2 dim only for now
+
+    # e.g.
+    # p(x,y)
+    # Y rows (dim=0) \X   columns (dim=1)
+    # p = np.array([[0.125, 0.0625, 0.03125, 0.03125],
+    #       [0.0625, 0.125, 0.03125, 0.03125],
+    #       [0.0625, 0.0625, 0.0625, 0.0625],
+    #       [0.25,0,0,0]])
+    # Correct answer = 11/8 = 1.375
+    total = 0
+    for i in range(p.shape[0]):
+        pyi = np.sum(p[i])
+        total+= pyi * entropy1(1/pyi * p[i])
+
+    return total
