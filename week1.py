@@ -51,6 +51,40 @@ def jointEntropy(p: np.array):
 
     return  np.sum(Hs)
 
+'''
+Takes a array of 2D samples as input
+returns the joint entropy
+
+'''
+
+def jointEntropyEmpirical(samples: np.array):
+
+    # samples : 
+    # each row represent a sample
+    # columns represent the features or random variables of interest
+
+    N, D = samples.shape
+
+    if D > 2:
+        raise NotImplementedError
+
+    alphabetX=list(set(samples[:,0]))
+    alphabetY=list(set(samples[:,1]))
+
+    jointProbabilities=np.zeros((len(alphabetX), len(alphabetY)))
+
+    for i in range(samples.shape[0]):
+        print('Sample {} : {}'.format(i, samples[i]))
+        sample=samples[i]
+        jointProbabilities[alphabetX.index(sample[0]), alphabetY.index(sample[1])]+=1
+
+    jointProbabilities/=N
+
+    return jointEntropy(jointProbabilities)
+
+'''
+
+'''
 def marginalP(p: np.array, dim: int):
     if dim + 1 > p.ndim:
         raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
