@@ -10,13 +10,16 @@ import scipy.stats as scips
 def infocontent(p):
     return - log2(p)
 
-def entropy1(p: np.array):
+def entropy(p: np.array):
+
     if type(p) == list:
         p = np.array(p)
+
     # if np.sum(p) != 1:
-    if isclose(np.sum(p), 1, rel_tol=1e-6):
+    if not isclose(np.sum(p), 1, rel_tol=1e-1):
         raise Exception('The sum of the elements of p should be = 1: {}'.format(p))
-    with suppress(ZeroDivisionError):
+
+    with np.errstate(divide='ignore'):
         H = - np.dot(p, np.where(p > 0, np.log2(p), 0))
 
     return  H
@@ -35,6 +38,18 @@ def calculateDatasetShannonEntropy(items):
  
     return entropy_value
 
+def entropyEmpirical(items):
+    itemscount = collections.Counter(items)
+    
+    # probability = # item x / # total number of items
+    dist = [x/sum(itemscount.values()) for x in itemscount.values()]
+ 
+    # use scipy to calculate entropy
+    entropy_value = entropy(dist)
+ 
+    return entropy_value
+
+
 entropyempirical = lambda items : calculateDatasetShannonEntropy(items)
 
 def jointEntropy(p: np.array):
@@ -47,13 +62,18 @@ def jointEntropy(p: np.array):
 
     # Perform element-wise p(x,y)*log p(x,y)
     plogp = lambda x: - x * np.where(x > 0, np.log2(x), 0)
-    Hs = np.array([plogp(pij) for pij in p])
+    with np.errstate(divide='ignore'):
+        Hs = np.array([plogp(pij) for pij in p])
 
     return  np.sum(Hs)
 
 '''
 Takes a array of 2D samples as input
 returns the joint entropy
+
+Tests:
+entropyempirical(['a','b','c','d']) should return 2
+testdata2bits = [[0,0],[0,1],[1,0],[1,1]] should return 2
 
 '''
 
@@ -62,6 +82,9 @@ def jointEntropyEmpirical(samples: np.array):
     # samples : 
     # each row represent a sample
     # columns represent the features or random variables of interest
+
+    if type(samples) == list:
+        samples=np.array(samples)
 
     N, D = samples.shape
 
@@ -117,11 +140,11 @@ def conditionalentropy2(p: np.array):
     total = 0
     for i in range(p.shape[0]):
         pyi = np.sum(p[i])
-        total+= pyi * entropy1(1/pyi * p[i])
+        total+= pyi * entropy(1/pyi * p[i])
 
     return total
 
-def conditionalentropy(p: np.array):
+def conditionalEntropy(p: np.array):
     # entropyXGivenY
     # H(X|Y)
     # 2 dim only for now
@@ -134,7 +157,24 @@ def conditionalentropy(p: np.array):
     total = 0
     for i in range(p.shape[1]):
         pxi = np.sum(p[:,i])
-        total+= pxi * entropy1(1/pxi * p[:,i])
+        total+= pxi * entropy(1/pxi * p[:,i])
 
     return total
+
+def conditionalEntropyEmpirical(samples):
+    # samples : 
+    # each row represent a sample
+    # columns represent the features or random variables of interest
+
+    if type(samples) == list:
+        samples=np.array(samples)
+
+    N, D = samples.shape
+
+    if D > 2:
+        raise NotImplementedError
+
+    jointEntropy = jointEntropyEmpirical(samples)
+    entropyY = entropyEmpirical(samples[:,1].flatten())
+    return jointEntropy - entropyY
 
