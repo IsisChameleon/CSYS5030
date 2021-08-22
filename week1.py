@@ -49,6 +49,15 @@ def entropyEmpirical(items):
  
     return entropy_value
 
+def getProbability(items):
+    itemscount = collections.Counter(items)
+    
+    # probability = # item x / # total number of items
+    dist = [x/sum(itemscount.values()) for x in itemscount.values()]
+
+    return dist
+
+
 
 entropyempirical = lambda items : calculateDatasetShannonEntropy(items)
 
@@ -97,7 +106,7 @@ def jointEntropyEmpirical(samples: np.array):
     jointProbabilities=np.zeros((len(alphabetX), len(alphabetY)))
 
     for i in range(samples.shape[0]):
-        print('Sample {} : {}'.format(i, samples[i]))
+        #print('Sample {} : {}'.format(i, samples[i]))
         sample=samples[i]
         jointProbabilities[alphabetX.index(sample[0]), alphabetY.index(sample[1])]+=1
 
