@@ -7,6 +7,15 @@ from contextlib import suppress
 import collections
 import scipy.stats as scips
 
+def marginalP(p: np.array, dim: int):
+    if dim + 1 > p.ndim:
+        raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
+    return np.sum(p, axis=dim)
+
+marginalX = lambda  p : marginalP(p, 0)
+
+marginalY = lambda  p : marginalP(p, 1)
+
 def infocontent(p):
     return - log2(p)
 
@@ -77,6 +86,33 @@ def jointEntropy(p: np.array):
     return  np.sum(Hs)
 
 '''
+Takes a array of 2D joint probabilities 
+returns the mutual information I(X;Y)
+
+I(X;Y)=H(X)+H(Y)−H(X,Y)
+
+Tests:
+mutualinformation([0.2, 0.3; 0.1, 0.4]) and validating that you get the result 0.0349 bits
+mutualinformation([0.5, 0; 0, 0.5]) and validating that you get the result 1 bit
+mutualinformation([0.25, 0.25; 0.25, 0.25]) and validating that you get the result 0 bits
+
+
+'''
+def mutualInformation(p: np.array):
+
+    if type(p) == list:
+        p = np.array(p)
+
+    if not isclose(np.sum(p), 1, rel_tol=1e-6):
+        raise Exception('The sum of the elements of p should be = 1{}'.format(p))
+
+    Hx = entropy(marginalX(p))
+    Hy = entropy(marginalY(p))
+    Hxy = jointEntropy(p)
+
+    return Hx + Hy - Hxy
+
+'''
 Takes a array of 2D samples as input
 returns the joint entropy
 
@@ -115,16 +151,27 @@ def jointEntropyEmpirical(samples: np.array):
     return jointEntropy(jointProbabilities)
 
 '''
+Mutual Information Empirical using data
+samples : 
+    # each row represent a sample xi, yi, ...
+    # columns represent the features or random variables of interest
 
+    I(X;Y)=H(X)+H(Y)−H(X,Y)
+
+    mutualinformationempirical([0,0,1,1],[0,1,0,1]) and validating that you get the result 0 bits
+    mutualinformationempirical([0,0,1,1],[0,0,1,1]) and validating that you get the result 1 bit
 '''
-def marginalP(p: np.array, dim: int):
-    if dim + 1 > p.ndim:
-        raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
-    return np.sum(p, axis=dim)
 
-marginalX = lambda  p : marginalP(p, 0)
+def mutualInformationEmpirical(samples: np.array):
 
-marginalY = lambda  p : marginalP(p, 1)
+    if type(samples) == list:
+        samples=np.array(samples)
+
+    Hxy = jointEntropyEmpirical(samples)
+    Hx = entropyEmpirical(samples[:,0])
+    Hy = entropyEmpirical(samples[:,1])
+    return Hx + Hy - Hxy
+
 
 def conditionalentropy2(p: np.array):
     # entropyXGivenY
