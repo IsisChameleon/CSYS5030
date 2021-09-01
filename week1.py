@@ -25,7 +25,7 @@ def entropy(p: np.array):
         p = np.array(p)
 
     # if np.sum(p) != 1:
-    if not isclose(np.sum(p), 1, rel_tol=1e-1):
+    if not isclose(np.sum(p), 1, rel_tol=1e-6):
         raise Exception('The sum of the elements of p should be = 1: {}'.format(p))
 
     with np.errstate(divide='ignore'):
@@ -122,7 +122,7 @@ testdata2bits = [[0,0],[0,1],[1,0],[1,1]] should return 2
 
 '''
 
-def jointEntropyEmpirical(samples: np.array):
+def jointEntropyEmpiricalOld(samples: np.array):
 
     # samples : 
     # each row represent a sample
@@ -150,6 +150,45 @@ def jointEntropyEmpirical(samples: np.array):
 
     return jointEntropy(jointProbabilities)
 
+#----------------------------------------------------------
+#  JOINT ENTROPY EMPIRICAL
+#----------------------------------------------------------
+
+def jointEntropyEmpirical(samples: np.array):
+
+    # samples : 
+    # each row represent a sample
+    # columns represent the features or random variables of interest
+
+    # Same as above but when more than 2 dimensions
+
+    if type(samples) == list:
+        samples=np.array(samples)
+
+    if samples.ndim == 1:
+        samples = samples.reshape(samples.shape[0], 1)
+
+    N, D = samples.shape   
+
+    alphabets=list()
+    for d in range(D):
+        #print('set samples{} = {}'.format(d, set(samples[:,d])))
+        alphabets.append(list(set(samples[:,d])))
+
+    alphabetsDimensions = tuple([ len(alphabeti) for alphabeti in alphabets])
+
+    jointProbabilities=np.zeros(alphabetsDimensions)
+
+    for i in range(samples.shape[0]):
+        #print('Sample {} : {}'.format(i, samples[i]))
+        sample=samples[i]
+        sampleFeaturesIndex = tuple([alphabets[d].index(sample[d]) for d in range(D)])
+        jointProbabilities[sampleFeaturesIndex]+=1
+
+    jointProbabilities/=N
+
+    return jointEntropy(jointProbabilities)
+
 '''
 Mutual Information Empirical using data
 samples : 
@@ -162,7 +201,7 @@ samples :
     mutualinformationempirical([0,0,1,1],[0,0,1,1]) and validating that you get the result 1 bit
 '''
 
-def mutualInformationEmpirical(samples: np.array):
+def mutualInformationEmpiricalOld(samples: np.array):
 
     if type(samples) == list:
         samples=np.array(samples)
@@ -170,6 +209,20 @@ def mutualInformationEmpirical(samples: np.array):
     Hxy = jointEntropyEmpirical(samples)
     Hx = entropyEmpirical(samples[:,0])
     Hy = entropyEmpirical(samples[:,1])
+    return Hx + Hy - Hxy
+
+#----------------------------------------------------------
+#  MUTUAL INFORMATION EMPIRICAL
+#----------------------------------------------------------
+
+def mutualInformationEmpirical(samples: np.array):
+
+    if type(samples) == list:
+        samples=np.array(samples)
+
+    Hxy = jointEntropyEmpirical(samples)
+    Hx = jointEntropyEmpirical(samples[:,0])
+    Hy = jointEntropyEmpirical(samples[:,1])
     return Hx + Hy - Hxy
 
 
@@ -233,4 +286,65 @@ def conditionalEntropyEmpirical(samples):
     jointEntropy = jointEntropyEmpirical(samples)
     entropyY = entropyEmpirical(samples[:,1].flatten())
     return jointEntropy - entropyY
+
+#----------------------------------------------------------
+#  CONDITIONAL ENTROPY EMPIRICAL XN YN
+#----------------------------------------------------------
+'''
+ CONDITIONAL ENTROPY EMPIRICAL USING XN AND YN (YN CAN BE MULTIVARIATE)
+
+ TESTS:
+ conditionalentropyempirical([0,0,1,1],[0,1,0,1]) and validating that you get the result 1 bit.
+ conditionalentropyempirical([0,0,1,1],[0,0,1,1]) and validating that you get the result 0 bits.
+'''
+def conditionalEntropyEmpiricalXnYn(xn, yn):
+    # samples : 
+    # each row represent a sample
+    # columns represent the features or random variables of interest
+
+    if type(xn) == list:
+        xn=np.array(xn)
+
+    if type(yn) == list:
+        yn=np.array(yn)
+
+    if (xn.shape[0] != yn.shape[0]):
+        raise Exception('Xn and Yn should have the same number of rows/smaples {} vs {}'.format(xn.shape[0], yn.shape[0]))
+
+    if xn.ndim == 1:
+        xn=xn.reshape(xn.shape[0],1)
+
+    if yn.ndim == 1:
+        yn=yn.reshape(yn.shape[0],1)
+
+    # We need to compute H(X,Y) - H(X):
+
+    H_XY = jointEntropyEmpirical(np.column_stack((xn,yn)))
+    H_Y = jointEntropyEmpirical(yn)
+    return H_XY - H_Y
+
+#-------------------------------------------------------------------------------------------------------------------------------
+#
+# CONDITIONAL MUTUAL INFORMATION EMPIRICAL 
+#
+# The conditional mutual information between variables x and y, conditional on variable z, for a distribution p(x,y,z) is:
+# 
+# I(X;Y∣Z)=H(X∣Z)+H(Y∣Z)−H(X,Y∣Z)
+#------------------------------------------------------------------------------------------------------------------------------
+
+'''
+Test that your code works by running, e.g.:
+conditionalmutualinformationempirical([0,0,1,1],[0,1,0,1],[0,1,0,1]) and validating that you get the result 0 bits.
+conditionalmutualinformationempirical([0,0,1,1],[0,0,1,1],[0,1,1,0]) and validating that you get the result 1 bit.
+conditionalmutualinformationempirical([0,0,1,1],[0,1,0,1],[0,1,1,0]) and validating that you get the result 1 bit. 
+'''
+
+def conditionalMutualInformationEmpirical(xn: np.array, yn: np.array, zn: np.array):
+    
+    HXgZ = conditionalEntropyEmpirical([[x, z] for x,z in zip(xn, zn)])
+    HYgZ = conditionalEntropyEmpirical([[y, z] for y,z in zip(yn, zn)])
+    xnyn = np.column_stack((xn,yn))
+    HXYgZ = conditionalEntropyEmpiricalXnYn(xnyn, zn)
+    CMI = HXgZ + HYgZ - HXYgZ
+    return CMI
 
