@@ -225,6 +225,32 @@ def mutualInformationEmpirical(samples: np.array):
     Hy = jointEntropyEmpirical(samples[:,1])
     return Hx + Hy - Hxy
 
+#----------------------------------------------------------
+#  MUTUAL INFORMATION EMPIRICAL Xn , Yn
+#----------------------------------------------------------
+
+def mutualInformationEmpiricalXnYn(xn, yn):
+
+    if type(xn) == list:
+        xn=np.array(xn)
+
+    if type(yn) == list:
+        yn=np.array(yn)
+
+    if (xn.shape[0] != yn.shape[0]):
+        raise Exception('Xn and Yn should have the same number of rows/samples {} vs {}'.format(xn.shape[0], yn.shape[0]))
+
+    if xn.ndim == 1:
+        xn=xn.reshape(xn.shape[0],1)
+
+    if yn.ndim == 1:
+        yn=yn.reshape(yn.shape[0],1)
+
+    Hxy = jointEntropyEmpirical(np.column_stack((xn,yn)))
+    Hx = jointEntropyEmpirical(xn)
+    Hy = jointEntropyEmpirical(yn)
+    return Hx + Hy - Hxy
+
 
 def conditionalentropy2(p: np.array):
     # entropyXGivenY
