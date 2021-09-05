@@ -12,9 +12,9 @@ def marginalP(p: np.array, dim: int):
         raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
     return np.sum(p, axis=dim)
 
-marginalX = lambda  p : marginalP(p, 0)
+marginalX = lambda  p : marginalP(p, 1)
 
-marginalY = lambda  p : marginalP(p, 1)
+marginalY = lambda  p : marginalP(p, 0)
 
 def infocontent(p):
     return - log2(p)
@@ -35,7 +35,7 @@ def entropy(p: np.array):
 
 # Calculate entropy of a sequence of stuff
 
-def calculateDatasetShannonEntropy(items):
+def calculateDatasetShannonEntropyOld(items):
     # also called empiricalentropy in course
     itemscount = collections.Counter(items)
     
@@ -65,10 +65,6 @@ def getProbability(items):
     dist = [x/sum(itemscount.values()) for x in itemscount.values()]
 
     return dist
-
-
-
-entropyempirical = lambda items : calculateDatasetShannonEntropy(items)
 
 def jointEntropy(p: np.array):
 

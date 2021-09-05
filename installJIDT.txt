@@ -1,0 +1,4 @@
+ cd notebooks
+ git clone https://github.com/jlizier/jidt.git
+
+ sudo apt install default-jdk ant
