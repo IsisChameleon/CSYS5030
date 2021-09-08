@@ -1,11 +1,16 @@
  # Installation steps for ubuntu
- 
+
  cd notebooks
  git clone https://github.com/jlizier/jidt.git
 
  sudo apt install default-jdk ant (already in tensyj)
 
  conda install -c conda-forge jpype1
+
+ # TO DO IN THE CONTAINER
+
+ install jpype 
+ create a volume for jidt and do the git clone and build automatically
 
  # running build scripts
 
@@ -41,3 +46,7 @@ No X11 DISPLAY variable was set, but this program performed an operation which r
 After having copied the jar file from the File Explorer wsl into D:\src and navigating where my java.exe is : 
 
 PS D:\OpenJDK\jdk-16.0.2\bin> .\java -jar D:\src\infodynamics.jar
+
+# Running a python script
+
+(base) jovyan@91c9341c2280:~/notebooks/jidt/demos/python$ /opt/conda/bin/python example1TeBinaryData.py

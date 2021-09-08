@@ -12,6 +12,7 @@ def marginalP(p: np.array, dim: int):
         raise Exception('The probability matrix has only {} dimensions while you are requesting to get marginal in dimension {}'.format(p.ndim, dim+1))
     return np.sum(p, axis=dim)
 
+#Note: The axis you sum along is removed from the shape. 
 marginalX = lambda  p : marginalP(p, 1)
 
 marginalY = lambda  p : marginalP(p, 0)
