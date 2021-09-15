@@ -5,7 +5,7 @@
 
  sudo apt install default-jdk ant (already in tensyj)
 
- conda install -c conda-forge jpype1
+ conda install -c conda-forge jpype1 (to do in container)
 
  # TO DO IN THE CONTAINER
 
