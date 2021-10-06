@@ -12,6 +12,9 @@
  install jpype 
  create a volume for jidt and do the git clone and build automatically
 
+ additional installations:
+
+
  # running build scripts
 
  https://github.com/jlizier/jidt/wiki/AntScripts
