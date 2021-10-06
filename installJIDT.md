@@ -13,6 +13,9 @@
  create a volume for jidt and do the git clone and build automatically
 
  additional installations:
+ (week 8 loading mnist experiments)
+ conda install -c pytorch pytorch
+ conda install -c pytorch torchvision
 
 
  # running build scripts
