@@ -16,6 +16,7 @@
  (week 8 loading mnist experiments)
  conda install -c pytorch pytorch
  conda install -c pytorch torchvision
+ conda install -c conda-forge pytorch-lightning
 
 
  # running build scripts

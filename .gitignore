@@ -1,4 +1,9 @@
 */.ipynb_checkpoints/*
+data/mnist/
+data/fashionmnist/
+data/cifar10/
+Assignment2/cifar-10-batches-py/
+Assignment2/lightning_logs/
 */__pycache__/*
 ./__pycache__/*
 __pycache__/*
