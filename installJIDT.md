@@ -17,6 +17,7 @@
  conda install -c pytorch pytorch
  conda install -c pytorch torchvision
  conda install -c conda-forge pytorch-lightning
+ /opt/conda/bin/python -m pip install -U torch-tb-profiler
 
 
  # running build scripts
