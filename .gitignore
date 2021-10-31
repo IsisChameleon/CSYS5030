@@ -7,6 +7,9 @@ data/ca54.txt
 data/week11*
 Assignment2/cifar-10-batches-py/
 Assignment2/lightning_logs/
+Assignment2/*.csv
+Assignment2/*.png
+Assignment2/2021-*
 */__pycache__/*
 ./__pycache__/*
 __pycache__/*
@@ -15,3 +18,14 @@ __pycache__/*
 **.pkl
 **.gml
 **.gz
+2021-10-30-070659-XORnet-Adam-0.03-bs40-batchacc.png
+2021-10-30-070659-XORnet-Adam-0.03-bs40-epochacc.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-HiddenNeuron1Act.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-HiddenNeuron2Act.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-OutputNeuronAct.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE0-0-1-0.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE0-0-1-1.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE0-1-1-0.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE0-1-1-1.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE1-0-2-0.png
+2021-10-30-092222-XORnet-Adam-0.03-bs40-TE1-1-2-0.png
