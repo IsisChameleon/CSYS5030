@@ -5,9 +5,9 @@
 
  sudo apt install default-jdk ant (already in tensyj)
 
- conda install -c conda-forge jpype1 (to do in container)
+ conda install -c conda-forge jpype1 (to do in container) - Done tensij2
 
- # TO DO IN THE CONTAINER
+ # TO DO IN THE CONTAINER - Done
 
  install jpype 
  create a volume for jidt and do the git clone and build automatically
