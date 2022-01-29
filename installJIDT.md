@@ -1,4 +1,12 @@
- # Installation steps for ubuntu
+# TO ENSURE NOTEBOOKS RUN 
+
+Provide correct path for infodynamics.jar file
+e.g. jarLocation = "/home/jovyan/notebooks/jidt/infodynamics.jar"
+provide correct path for JIDT python libraries 
+e.g. sys.path.append("/home/jovyan/notebooks/jidt/demos/python")
+
+
+# Installation steps for ubuntu
 
  cd notebooks
  git clone https://github.com/jlizier/jidt.git
