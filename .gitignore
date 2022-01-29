@@ -3,7 +3,6 @@ Assignment2/runs/
 data/mnist/
 data/fashionmnist/
 data/cifar10/
-data/ca54.txt
 data/week11*
 Assignment2/cifar-10-batches-py/
 Assignment2/lightning_logs/

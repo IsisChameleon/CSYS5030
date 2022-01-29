@@ -36,18 +36,6 @@ def entropy(p: np.array):
 
 # Calculate entropy of a sequence of stuff
 
-def calculateDatasetShannonEntropyOld(items):
-    # also called empiricalentropy in course
-    itemscount = collections.Counter(items)
-    
-    # probability = # item x / # total number of items
-    dist = [x/sum(itemscount.values()) for x in itemscount.values()]
- 
-    # use scipy to calculate entropy
-    entropy_value = scips.entropy(dist, base=2)
- 
-    return entropy_value
-
 def entropyEmpirical(items):
     itemscount = collections.Counter(items)
     
@@ -197,16 +185,6 @@ samples :
     mutualinformationempirical([0,0,1,1],[0,1,0,1]) and validating that you get the result 0 bits
     mutualinformationempirical([0,0,1,1],[0,0,1,1]) and validating that you get the result 1 bit
 '''
-
-def mutualInformationEmpiricalOld(samples: np.array):
-
-    if type(samples) == list:
-        samples=np.array(samples)
-
-    Hxy = jointEntropyEmpirical(samples)
-    Hx = entropyEmpirical(samples[:,0])
-    Hy = entropyEmpirical(samples[:,1])
-    return Hx + Hy - Hxy
 
 #----------------------------------------------------------
 #  MUTUAL INFORMATION EMPIRICAL
