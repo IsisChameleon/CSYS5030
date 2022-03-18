@@ -11,12 +11,13 @@ Assignment2/*.png
 Assignment2/2021-*
 */__pycache__/*
 ./__pycache__/*
-__pycache__/*
+__pycache__/
 .ipynb_checkpoints/*
 **.pyc
 **.pkl
 **.gml
 **.gz
+*.pyc
 2021-10-30-070659-XORnet-Adam-0.03-bs40-batchacc.png
 2021-10-30-070659-XORnet-Adam-0.03-bs40-epochacc.png
 2021-10-30-092222-XORnet-Adam-0.03-bs40-HiddenNeuron1Act.png
@@ -28,3 +29,4 @@ __pycache__/*
 2021-10-30-092222-XORnet-Adam-0.03-bs40-TE0-1-1-1.png
 2021-10-30-092222-XORnet-Adam-0.03-bs40-TE1-0-2-0.png
 2021-10-30-092222-XORnet-Adam-0.03-bs40-TE1-1-2-0.png
+__pycache__/week1.cpython-39.pyc
